@@ -5,9 +5,19 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/msskobelina/fit-profi/internal/service"
 	gomail "gopkg.in/mail.v2"
 )
+
+type EmailsAPI interface {
+	SendEmail(ctx context.Context, inp SendEmailInput) error
+}
+
+type SendEmailInput struct {
+	To          string
+	Subject     string
+	ContentType string
+	Body        string
+}
 
 type Emails struct{}
 
@@ -15,7 +25,7 @@ func New() *Emails {
 	return &Emails{}
 }
 
-func (e *Emails) SendEmail(ctx context.Context, inp service.SendEmailInput) error {
+func (e *Emails) SendEmail(ctx context.Context, inp SendEmailInput) error {
 	m := gomail.NewMessage()
 	m.SetHeaders(map[string][]string{
 		"From":    {os.Getenv("MAIL_USERNAME")},
@@ -29,5 +39,6 @@ func (e *Emails) SendEmail(ctx context.Context, inp service.SendEmailInput) erro
 		fmt.Println("ERROR", err)
 		return err
 	}
+
 	return nil
 }

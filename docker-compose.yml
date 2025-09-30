@@ -26,9 +26,9 @@ services:
       mysql:
         condition: service_healthy
     env_file:
-      - ./api/.env.docker
+      - .env.docker
     ports:
-      - "8080:8080"
+      - "8085:8080"
 
 volumes:
   mysql-data:
