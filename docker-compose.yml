@@ -20,7 +20,7 @@ services:
 
   app:
     build:
-      context: ./api
+      context: .
       dockerfile: dockerfile
     depends_on:
       mysql:
