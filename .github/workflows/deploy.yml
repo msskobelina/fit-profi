@@ -62,7 +62,7 @@ jobs:
           USER: ${{ secrets.DROPLET_USER }}
         run: |
           ssh \
-            -o StrictHostKeyChecking=yes \
+            -o StrictHostKeyChecking=accept-new \
             -o TCPKeepAlive=yes \
             -o ServerAliveInterval=30 \
             -o ServerAliveCountMax=120 \
