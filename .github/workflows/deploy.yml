@@ -60,4 +60,10 @@ jobs:
         env:
           HOST: ${{ secrets.DROPLET_HOST }}
           USER: ${{ secrets.DROPLET_USER }}
-        run: ssh -o StrictHostKeyChecking=yes ${USER}@${HOST} 'bash /opt/fit-profi/deploy.sh'
+        run: |
+          ssh \
+            -o StrictHostKeyChecking=yes \
+            -o TCPKeepAlive=yes \
+            -o ServerAliveInterval=30 \
+            -o ServerAliveCountMax=120 \
+            -tt "${USER}@${HOST}" 'bash -lc "/opt/fit-profi/deploy.sh"'
