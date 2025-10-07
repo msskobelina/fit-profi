@@ -48,23 +48,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install SSH client
-        run: sudo apt-get update && sudo apt-get install -y openssh-client
+      - name: Start ssh-agent and add key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Add SSH key & known_hosts
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          if [ -n "${{ secrets.SSH_KNOWN_HOSTS }}" ]; then
-            echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
-          else
-            ssh-keyscan -H ${{ secrets.DROPLET_HOST }} >> ~/.ssh/known_hosts
-          fi
+      - name: Add droplet to known_hosts
+        run: ssh-keyscan -H ${{ secrets.DROPLET_HOST }} >> ~/.ssh/known_hosts
 
       - name: Run remote deploy script
         env:
           HOST: ${{ secrets.DROPLET_HOST }}
           USER: ${{ secrets.DROPLET_USER }}
-        run: |
-          ssh -o StrictHostKeyChecking=yes ${USER}@${HOST} 'bash /opt/fit-profi/deploy.sh'
+        run: ssh -o StrictHostKeyChecking=yes ${USER}@${HOST} 'bash /opt/fit-profi/deploy.sh'
