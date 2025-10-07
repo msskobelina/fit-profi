@@ -132,7 +132,7 @@ func Run() {
 			l.Error("app - Run - httpServer.Notify", "err", err)
 		}
 	}
-
+	// print
 	if err = httpServer.Shutdown(); err != nil {
 		l.Error("app - Run - httpServer.Shutdown", "err", err)
 	}
