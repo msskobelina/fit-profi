@@ -53,9 +53,6 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Add droplet to known_hosts
-        run: ssh-keyscan -H ${{ secrets.DROPLET_HOST }} >> ~/.ssh/known_hosts
-
       - name: Run remote deploy script
         env:
           HOST: ${{ secrets.DROPLET_HOST }}
