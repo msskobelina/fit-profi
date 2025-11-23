@@ -17,6 +17,29 @@ services:
       interval: 5s
       timeout: 3s
       retries: 30
+  backup:
+    image: percona/percona-xtrabackup:8.0
+    container_name: fitprofi-backup
+    depends_on:
+      - mysql
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: rootpass
+
+      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+      AWS_DEFAULT_REGION: "eu-central-1"
+      S3_BUCKET: "fitprofi-db-backups"
+      S3_PREFIX: "mysql"
+
+    volumes:
+      - mysql-data:/var/lib/mysql:ro
+      - /opt/xtrabackup-keys/xb.key:/keys/xb.key:ro
+      - /opt/fitprofi-backups:/backups
+
+    entrypoint: ["/bin/bash", "/backups/entrypoint.sh"]
 
   app:
     build:
