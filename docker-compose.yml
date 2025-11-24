@@ -22,14 +22,14 @@ services:
     container_name: fitprofi-backup
     depends_on:
       - mysql
+    env_file:
+      - .env.docker
     environment:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
       MYSQL_USER: root
       MYSQL_PASSWORD: rootpass
 
-      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
-      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
       AWS_DEFAULT_REGION: "eu-central-1"
       S3_BUCKET: "fitprofi-db-backups"
       S3_PREFIX: "mysql"
