@@ -1,13 +1,16 @@
 FROM percona/percona-xtrabackup:8.0
 
-RUN microdnf install -y \
+RUN mkdir -p /var/cache/yum/metadata /var/cache/dnf /var/tmp \
+  && chmod -R 755 /var/cache/yum /var/cache/dnf /var/tmp \
+  && microdnf install -y \
         bash \
         cronie \
         awscli \
         ca-certificates \
         tzdata \
         tar \
-    && microdnf clean all
+  && microdnf clean all \
+  && rm -rf /var/cache/yum /var/cache/dnf
 
 WORKDIR /scripts
 COPY scripts/backup/ /scripts/
