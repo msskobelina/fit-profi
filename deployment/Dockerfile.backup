@@ -1,7 +1,8 @@
-FROM amazon/aws-cli:2 AS awscli
+FROM amazon/aws-cli:latest AS awscli
+
 FROM percona/percona-xtrabackup:8.0
 
-USER 0
+USER root
 
 RUN microdnf install -y \
       bash \
@@ -12,13 +13,14 @@ RUN microdnf install -y \
       gzip \
     && microdnf clean all
 
-COPY --from=awscli /usr/local/aws-cli/ /usr/local/aws-cli/
+COPY --from=awscli /usr/local/aws-cli /usr/local/aws-cli
 COPY --from=awscli /usr/local/bin/aws /usr/local/bin/aws
 
 WORKDIR /scripts
 COPY scripts/backup/ /scripts/
+
 RUN chmod +x /scripts/*.sh \
-    && mkdir -p /var/log \
+    && mkdir -p /var/log /data /keys \
     && touch /var/log/full_backup.log /var/log/inc_backup.log
 
 ENTRYPOINT ["/bin/bash", "/scripts/entrypoint.sh"]
