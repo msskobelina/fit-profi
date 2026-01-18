@@ -20,9 +20,20 @@ xtrabackup \
   --encrypt=AES256 \
   --encrypt-key-file="${KEY_FILE}"
 
+echo "[FULL] Decrypting backup files..."
+find "${FULL_DIR}" -type f -name "*.xbcrypt" -print0 | while IFS= read -r -d '' f; do
+  xtrabackup --decrypt=AES256 --encrypt-key-file="${KEY_FILE}" --target-dir="$(dirname "$f")"
+done
+
+find "${FULL_DIR}" -type f -name "*.xbcrypt" -delete
+
+echo "[FULL] Preparing backup..."
 xtrabackup --prepare --target-dir="${FULL_DIR}"
 
+echo "[FULL] Archiving..."
 tar -czf "${FULL_DIR}.tar.gz" -C "${BASE_DIR}" "$(basename "${FULL_DIR}")"
+
+echo "[FULL] Uploading to S3..."
 aws s3 cp "${FULL_DIR}.tar.gz" "s3://${S3_BUCKET}/${S3_PREFIX}/full/${DATE}.tar.gz"
 
 echo "[FULL] Keeping only the latest full locally..."
