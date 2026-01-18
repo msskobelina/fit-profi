@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-DATE="$(date +%Y-%m-%d_%H-%M)"
+DATE=$(date +%Y-%m-%d_%H-%M)
 BASE_DIR="/data"
 FULL_DIR="${BASE_DIR}/full_${DATE}"
 KEY_FILE="/keys/xb.key"
@@ -20,14 +20,12 @@ xtrabackup \
   --encrypt=AES256 \
   --encrypt-key-file="${KEY_FILE}"
 
-echo "[FULL] Archiving..."
 tar -czf "${FULL_DIR}.tar.gz" -C "${BASE_DIR}" "$(basename "${FULL_DIR}")"
 
-echo "[FULL] Uploading to S3..."
 aws s3 cp "${FULL_DIR}.tar.gz" "s3://${S3_BUCKET}/${S3_PREFIX}/full/${DATE}.tar.gz"
 
 echo "[FULL] Keeping only the latest full locally..."
-ls -dt "${BASE_DIR}"/full_* 2>/dev/null | tail -n +2 | xargs -r rm -rf
+ls -dt ${BASE_DIR}/full_* 2>/dev/null | tail -n +2 | xargs -r rm -rf
 
 rm -f "${FULL_DIR}.tar.gz"
 
