@@ -1,8 +1,7 @@
 FROM percona/percona-xtrabackup:8.0
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    bash cron awscli ca-certificates tzdata tar \
-  && rm -rf /var/lib/apt/lists/*
+RUN apk update && apk add --no-cache bash cron awscli ca-certificates tzdata tar \
+  && rm -rf /var/cache/apk/*
 
 WORKDIR /scripts
 COPY scripts/backup/ /scripts/
