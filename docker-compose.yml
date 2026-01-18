@@ -17,8 +17,11 @@ services:
       interval: 5s
       timeout: 3s
       retries: 30
+
   backup:
-    image: percona/percona-xtrabackup:8.0
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile.backup
     container_name: fitprofi-backup
     depends_on:
       - mysql
@@ -29,22 +32,19 @@ services:
       MYSQL_PORT: 3306
       MYSQL_USER: root
       MYSQL_PASSWORD: rootpass
-
       AWS_DEFAULT_REGION: "eu-central-1"
       S3_BUCKET: "fitprofi-db-backups"
       S3_PREFIX: "mysql"
-
     volumes:
       - mysql-data:/var/lib/mysql:ro
+      - backup-data:/data
       - /opt/xtrabackup-keys/xb.key:/keys/xb.key:ro
-      - /opt/fitprofi-backups:/backups
-
-    entrypoint: ["/bin/bash", "/backups/entrypoint.sh"]
+    restart: unless-stopped
 
   app:
     build:
       context: .
-      dockerfile: dockerfile
+      dockerfile: deployment/Dockerfile.app
     depends_on:
       mysql:
         condition: service_healthy
@@ -55,3 +55,4 @@ services:
 
 volumes:
   mysql-data:
+  backup-data:

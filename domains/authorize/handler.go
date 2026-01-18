@@ -131,8 +131,9 @@ func (h *Handler) reset(c echo.Context) error {
 //	401: body:errorResponse
 func (h *Handler) check(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]any{
-		"userId": c.Get("userID"),
-		"role":   c.Get("userRole"),
+		"userId":   c.Get("userID"),
+		"role":     c.Get("userRole"),
+		"fullName": c.Get("userFullName"),
 	})
 }
 

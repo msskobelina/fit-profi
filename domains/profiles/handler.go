@@ -44,7 +44,7 @@ func (h *Handler) getUserSelf(c echo.Context) error {
 	role := c.Get("userRole").(string)
 	p, err := h.service.GetUserProfile(c.Request().Context(), uid, role, uid)
 	if err != nil {
-		return c.JSON(http.StatusNotFound, ErrorResponse{Error: "not found"})
+		return c.JSON(http.StatusNotFound, ErrorResponse{Error: "user profile not found"})
 	}
 
 	return c.JSON(http.StatusOK, p)

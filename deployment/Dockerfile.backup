@@ -1,0 +1,11 @@
+FROM percona/percona-xtrabackup:8.0
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash cron awscli ca-certificates tzdata tar \
+  && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /scripts
+COPY scripts/backup/ /scripts/
+RUN chmod +x /scripts/*.sh
+
+ENTRYPOINT ["/bin/bash", "/scripts/entrypoint.sh"]
