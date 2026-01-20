@@ -9,7 +9,6 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-
 	"github.com/msskobelina/fit-profi/api/emails"
 	"github.com/msskobelina/fit-profi/domains/authorize"
 	"github.com/msskobelina/fit-profi/domains/calendar"
@@ -17,6 +16,7 @@ import (
 	"github.com/msskobelina/fit-profi/domains/nutrition"
 	"github.com/msskobelina/fit-profi/domains/profiles"
 	"github.com/msskobelina/fit-profi/domains/programs"
+	"github.com/msskobelina/fit-profi/pkg/analytics"
 
 	"github.com/msskobelina/fit-profi/pkg/httpserver"
 	"github.com/msskobelina/fit-profi/pkg/logger"
@@ -66,9 +66,15 @@ func Run() {
 
 	emailApi := emails.New()
 	authRepo := authorize.NewRepository(sql)
+	mixpanel := analytics.NewMixpanel(
+		os.Getenv("MIXPANEL_TOKEN"),
+		os.Getenv("MIXPANEL_API_HOST"),
+	)
+
 	authService := authorize.NewService(
 		authRepo,
 		emailApi,
+		mixpanel,
 		os.Getenv("HMAC_SECRET"),
 		os.Getenv("ADMIN_USER_FULLNAME"),
 		os.Getenv("ADMIN_USER_EMAIL"),
@@ -76,7 +82,7 @@ func Run() {
 	authMW := AuthMiddleware(authService)
 
 	profilesRepo := profiles.NewRepository(sql)
-	profilesService := profiles.NewService(profilesRepo)
+	profilesService := profiles.NewService(profilesRepo, mixpanel)
 
 	programsRepo := programs.NewRepository(sql)
 	programsService := programs.NewService(programsRepo)
@@ -132,7 +138,6 @@ func Run() {
 			l.Error("app - Run - httpServer.Notify", "err", err)
 		}
 	}
-	// print
 	if err = httpServer.Shutdown(); err != nil {
 		l.Error("app - Run - httpServer.Shutdown", "err", err)
 	}

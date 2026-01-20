@@ -4,12 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/msskobelina/fit-profi/api/emails"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	"github.com/msskobelina/fit-profi/api/emails"
 	"github.com/msskobelina/fit-profi/pkg/access"
+	"github.com/msskobelina/fit-profi/pkg/analytics"
 	utilsErrors "github.com/msskobelina/fit-profi/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -26,15 +27,22 @@ type Service interface {
 type service struct {
 	repo       Repository
 	emails     emails.EmailsAPI
+	analytics  analytics.Client
 	hmacSecret string
 	adminName  string
 	adminEmail string
 }
 
-func NewService(repo Repository, emails emails.EmailsAPI, hmacSecret, adminName, adminEmail string) Service {
+func NewService(
+	repo Repository,
+	emails emails.EmailsAPI,
+	analytics analytics.Client,
+	hmacSecret, adminName,
+	adminEmail string) Service {
 	return &service{
 		repo:       repo,
 		emails:     emails,
+		analytics:  analytics,
 		hmacSecret: hmacSecret,
 		adminName:  adminName,
 		adminEmail: adminEmail,
@@ -51,7 +59,7 @@ func (s *service) Register(ctx context.Context, inp *RegisterUserRequest) (*Auth
 		role = access.UserRoleAdmin
 	}
 	now := time.Now()
-	tok, err := access.EncodeToken(&access.Token{
+	token, err := access.EncodeToken(&access.Token{
 		RegisteredClaims: jwt.RegisteredClaims{
 			ID:        uuid.NewString(),
 			ExpiresAt: jwt.NewNumericDate(now.Add(14 * 24 * time.Hour)),
@@ -65,8 +73,19 @@ func (s *service) Register(ctx context.Context, inp *RegisterUserRequest) (*Auth
 	if err != nil {
 		return nil, err
 	}
+
+	if analyticsErr := s.analytics.Track(ctx, "User Registered", fmt.Sprintf("%d", u.ID), map[string]any{
+		"user_id":  u.ID,
+		"email":    u.Email,
+		"role":     string(role),
+		"source":   "backend",
+		"endpoint": "/users/register",
+	}); analyticsErr != nil {
+		fmt.Println("Register analytics error:", analyticsErr)
+	}
+
 	return &AuthResponse{
-		Token:    tok,
+		Token:    token,
 		UserID:   u.ID,
 		FullName: u.FullName,
 		Email:    u.Email,
@@ -89,7 +108,7 @@ func (s *service) Login(ctx context.Context, inp *LoginUserRequest) (*AuthRespon
 		role = access.UserRoleAdmin
 	}
 	now := time.Now()
-	tok, err := access.EncodeToken(&access.Token{
+	token, err := access.EncodeToken(&access.Token{
 		RegisteredClaims: jwt.RegisteredClaims{
 			ID:        uuid.NewString(),
 			ExpiresAt: jwt.NewNumericDate(now.Add(14 * 24 * time.Hour)),
@@ -103,8 +122,18 @@ func (s *service) Login(ctx context.Context, inp *LoginUserRequest) (*AuthRespon
 	if err != nil {
 		return nil, err
 	}
+	if analyticsErr := s.analytics.Track(ctx, "User Login", fmt.Sprintf("%d", u.ID), map[string]any{
+		"user_id":  u.ID,
+		"email":    u.Email,
+		"role":     string(role),
+		"source":   "backend",
+		"endpoint": "/users/login",
+	}); analyticsErr != nil {
+		fmt.Println("Login analytics error:", analyticsErr)
+	}
+
 	return &AuthResponse{
-		Token:    tok,
+		Token:    token,
 		UserID:   u.ID,
 		FullName: u.FullName,
 		Email:    u.Email,
