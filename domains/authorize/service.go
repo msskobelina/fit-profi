@@ -73,7 +73,6 @@ func (s *service) Register(ctx context.Context, inp *RegisterUserRequest) (*Auth
 	if err != nil {
 		return nil, err
 	}
-
 	if analyticsErr := s.analytics.Track(ctx, "User Registered", fmt.Sprintf("%d", u.ID), map[string]any{
 		"user_id":  u.ID,
 		"email":    u.Email,
