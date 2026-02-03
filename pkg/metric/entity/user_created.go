@@ -3,7 +3,7 @@ package entity
 type UserCreated struct{}
 
 func (UserCreated) GetName() string {
-	return "fit-profi_user_created_total"
+	return "fit_profi_user_created_total"
 }
 
 func (UserCreated) GetDescription() string {

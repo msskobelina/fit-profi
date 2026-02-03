@@ -3,7 +3,7 @@ package entity
 type LoginFailed struct{}
 
 func (LoginFailed) GetName() string {
-	return "fit-profi_login_failed_total"
+	return "fit_profi_login_failed_total"
 }
 
 func (LoginFailed) GetDescription() string {
