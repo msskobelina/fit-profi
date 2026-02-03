@@ -12,6 +12,7 @@ import (
 	"github.com/msskobelina/fit-profi/pkg/access"
 	"github.com/msskobelina/fit-profi/pkg/analytics"
 	utilsErrors "github.com/msskobelina/fit-profi/pkg/errors"
+	"github.com/msskobelina/fit-profi/pkg/metric"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -28,6 +29,7 @@ type service struct {
 	repo       Repository
 	emails     emails.EmailsAPI
 	analytics  analytics.Client
+	metrics    *metric.Service
 	hmacSecret string
 	adminName  string
 	adminEmail string
@@ -37,12 +39,14 @@ func NewService(
 	repo Repository,
 	emails emails.EmailsAPI,
 	analytics analytics.Client,
+	metrics *metric.Service,
 	hmacSecret, adminName,
 	adminEmail string) Service {
 	return &service{
 		repo:       repo,
 		emails:     emails,
 		analytics:  analytics,
+		metrics:    metrics,
 		hmacSecret: hmacSecret,
 		adminName:  adminName,
 		adminEmail: adminEmail,
@@ -54,6 +58,8 @@ func (s *service) Register(ctx context.Context, inp *RegisterUserRequest) (*Auth
 	if err != nil {
 		return nil, err
 	}
+	s.metrics.TrackUserCreated("api")
+
 	role := access.UserRoleUser
 	if u.FullName == s.adminName && u.Email == s.adminEmail {
 		role = access.UserRoleAdmin
@@ -94,10 +100,12 @@ func (s *service) Register(ctx context.Context, inp *RegisterUserRequest) (*Auth
 func (s *service) Login(ctx context.Context, inp *LoginUserRequest) (*AuthResponse, error) {
 	u, err := s.repo.GetUser(ctx, inp.Email)
 	if err != nil {
+		s.metrics.TrackLoginFailed("user_not_found")
 		return nil, err
 	}
 	if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(inp.Password)); err != nil {
 		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
+			s.metrics.TrackLoginFailed("wrong_password")
 			return nil, &utilsErrors.Error{Message: "Wrong password"}
 		}
 		return nil, err

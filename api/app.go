@@ -21,10 +21,23 @@ import (
 	"github.com/msskobelina/fit-profi/pkg/httpserver"
 	"github.com/msskobelina/fit-profi/pkg/logger"
 	"github.com/msskobelina/fit-profi/pkg/mysql"
+
+	metricPkg "github.com/msskobelina/fit-profi/pkg/metric"
+	metricEntity "github.com/msskobelina/fit-profi/pkg/metric/entity"
+	promMetric "github.com/msskobelina/fit-profi/pkg/observability/prometheus"
 )
 
 func Run() {
 	l := logger.New(os.Getenv("LOG_LEVEL"))
+
+	// metrics
+	promAdapter := promMetric.NewAdapter()
+	metricAdapter := promMetric.NewMetricAdapter(promAdapter)
+	metricService := metricPkg.NewService(
+		metricAdapter,
+		metricEntity.UserCreated{},
+		metricEntity.LoginFailed{},
+	)
 
 	sql, err := mysql.New(mysql.MySQLConfig{
 		User:     os.Getenv("MYSQL_USER"),
@@ -75,6 +88,7 @@ func Run() {
 		authRepo,
 		emailApi,
 		mixpanel,
+		metricService,
 		os.Getenv("HMAC_SECRET"),
 		os.Getenv("ADMIN_USER_FULLNAME"),
 		os.Getenv("ADMIN_USER_EMAIL"),
@@ -110,6 +124,7 @@ func Run() {
 
 	// health
 	e.GET("/ping", func(c echo.Context) error { return c.NoContent(http.StatusOK) })
+	e.GET("/metrics", echo.WrapHandler(promAdapter.Handler()))
 
 	v1 := e.Group("/api/v1")
 

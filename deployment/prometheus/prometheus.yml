@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: "fit-profi-app"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["fitprofi-app:8080"]
+
+  - job_name: "mysql"
+    static_configs:
+      - targets: ["fitprofi-mysqld-exporter:9104"]
+
+  - job_name: "cadvisor"
+    static_configs:
+      - targets: ["fitprofi-cadvisor:8080"]

@@ -46,6 +46,7 @@ services:
     build:
       context: .
       dockerfile: deployment/Dockerfile.app
+    container_name: fitprofi-app
     depends_on:
       mysql:
         condition: service_healthy
@@ -80,6 +81,15 @@ services:
       - /var/run:/var/run:ro
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:v2.49.0
+    container_name: fitprofi-prometheus
+    volumes:
+      - ./deployment/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
     restart: unless-stopped
 
 volumes:
