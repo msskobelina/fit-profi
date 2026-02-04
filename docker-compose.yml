@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   mysql:
     image: mysql:8.0
@@ -20,12 +22,11 @@ services:
     restart: unless-stopped
 
   backup:
-    build:
-      context: .
-      dockerfile: deployment/Dockerfile.backup
+    image: fit-profi-backup:latest
     container_name: fitprofi-backup
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     env_file:
       - .env.docker
     environment:
@@ -41,6 +42,8 @@ services:
       - backup-data:/data
       - /opt/xtrabackup-keys/xb.key:/keys/xb.key:ro
     restart: unless-stopped
+    profiles:
+      - infra
 
   app:
     build:
@@ -70,6 +73,8 @@ services:
     ports:
       - "9104:9104"
     restart: unless-stopped
+    profiles:
+      - infra
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.49.1
@@ -82,6 +87,8 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
     restart: unless-stopped
+    profiles:
+      - infra
 
   prometheus:
     image: prom/prometheus:v2.49.0
@@ -91,6 +98,8 @@ services:
     ports:
       - "9090:9090"
     restart: unless-stopped
+    profiles:
+      - infra
 
 volumes:
   mysql-data:
