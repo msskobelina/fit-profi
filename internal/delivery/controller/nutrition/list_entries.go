@@ -14,6 +14,18 @@ type ListEntriesHandler interface {
 	ListEntries(context.Context, qryNutrition.ListEntriesQuery) ([]model.DiaryEntry, error)
 }
 
+// ListEntriesController godoc
+//
+//	@Summary		List nutrition diary entries
+//	@Description	Returns all diary entries for the authenticated user on a given date (default: today).
+//	@Tags			Nutrition
+//	@Security		BearerAuth
+//	@Produce		json
+//	@Param			date	query		string	false	"Date in YYYY-MM-DD format"	example(2024-03-15)
+//	@Success		200		{array}		model.DiaryEntry
+//	@Failure		400		{object}	controller.ErrorResponse
+//	@Failure		401		{object}	controller.ErrorResponse
+//	@Router			/nutrition/entries [get]
 func ListEntriesController(io controller.IO, h ListEntriesHandler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		userID, _ := r.Context().Value("userID").(int)

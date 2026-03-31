@@ -14,6 +14,18 @@ type GetProgramHandler interface {
 	GetProgram(context.Context, qryPrograms.GetProgramQuery) (*model.TrainingProgram, error)
 }
 
+// GetProgramController godoc
+//
+//	@Summary		Get training program
+//	@Description	Returns a training program by ID.
+//	@Tags			Programs
+//	@Security		BearerAuth
+//	@Produce		json
+//	@Param			id	path		int	true	"Program ID"
+//	@Success		200	{object}	model.TrainingProgram
+//	@Failure		400	{object}	controller.ErrorResponse
+//	@Failure		401	{object}	controller.ErrorResponse
+//	@Router			/programs/{id} [get]
 func GetProgramController(io controller.IO, h GetProgramHandler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		idStr := controller.PathParam(r, "id")

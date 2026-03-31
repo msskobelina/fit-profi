@@ -9,6 +9,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	echoSwagger "github.com/swaggo/echo-swagger"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	googlecalendar "google.golang.org/api/calendar/v3"
@@ -166,6 +167,7 @@ func Run() {
 
 	e.GET("/ping", func(c echo.Context) error { return c.NoContent(http.StatusOK) })
 	e.GET("/metrics", echo.WrapHandler(promAdapter.Handler()))
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	delivery.Register(e, app, io, authMW)
 

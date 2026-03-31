@@ -14,6 +14,18 @@ type GetEntryHandler interface {
 	GetEntry(context.Context, qryNutrition.GetEntryQuery) (*model.DiaryEntry, error)
 }
 
+// GetEntryController godoc
+//
+//	@Summary		Get nutrition diary entry
+//	@Description	Returns a single diary entry by ID.
+//	@Tags			Nutrition
+//	@Security		BearerAuth
+//	@Produce		json
+//	@Param			id	path		int	true	"Entry ID"
+//	@Success		200	{object}	model.DiaryEntry
+//	@Failure		400	{object}	controller.ErrorResponse
+//	@Failure		401	{object}	controller.ErrorResponse
+//	@Router			/nutrition/entries/{id} [get]
 func GetEntryController(io controller.IO, h GetEntryHandler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		userID, _ := r.Context().Value("userID").(int)

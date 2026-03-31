@@ -13,6 +13,16 @@ type LogoutHandler interface {
 	Logout(ctx context.Context, cmd cmdAuthorize.LogoutUserCommand) error
 }
 
+// LogoutController godoc
+//
+//	@Summary		Logout
+//	@Description	Revokes the current JWT token.
+//	@Tags			Auth
+//	@Security		BearerAuth
+//	@Produce		json
+//	@Success		204	"No Content"
+//	@Failure		401	{object}	controller.ErrorResponse
+//	@Router			/users/logout [post]
 func LogoutController(io controller.IO, h LogoutHandler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		raw := r.Header.Get("Authorization")

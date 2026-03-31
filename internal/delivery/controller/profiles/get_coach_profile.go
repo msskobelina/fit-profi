@@ -13,6 +13,17 @@ type GetCoachProfileHandler interface {
 	GetCoachProfile(context.Context, qryProfiles.GetCoachProfileQuery) (*model.CoachProfile, error)
 }
 
+// GetCoachProfileController godoc
+//
+//	@Summary		Get coach profile
+//	@Description	Returns the coach profile of the authenticated user.
+//	@Tags			Profiles
+//	@Security		BearerAuth
+//	@Produce		json
+//	@Success		200	{object}	model.CoachProfile
+//	@Failure		400	{object}	controller.ErrorResponse
+//	@Failure		401	{object}	controller.ErrorResponse
+//	@Router			/profiles/coach [get]
 func GetCoachProfileController(io controller.IO, h GetCoachProfileHandler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		userID, _ := r.Context().Value("userID").(int)

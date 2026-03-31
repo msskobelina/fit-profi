@@ -8,17 +8,31 @@ import (
 	"github.com/msskobelina/fit-profi/internal/delivery/controller"
 )
 
+// RegisterRequest is the body for POST /users/register.
+type RegisterRequest struct {
+	FullName string `json:"fullName" validate:"required"                 example:"John Doe"`
+	Email    string `json:"email"    validate:"required,email"            example:"john@example.com"`
+	Password string `json:"password" validate:"required,min=6"            example:"secret123"`
+}
+
 type RegisterHandler interface {
 	Register(ctx context.Context, cmd cmdAuthorize.RegisterUserCommand) (*cmdAuthorize.RegisterUserResult, error)
 }
 
+// RegisterController godoc
+//
+//	@Summary		Register a new user
+//	@Description	Creates a new account and returns a JWT token.
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			body	body		RegisterRequest					true	"Registration payload"
+//	@Success		200		{object}	cmdAuthorize.RegisterUserResult
+//	@Failure		400		{object}	controller.ErrorResponse
+//	@Router			/users/register [post]
 func RegisterController(io controller.IO, h RegisterHandler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var req struct {
-			FullName string `json:"fullName" validate:"required"`
-			Email    string `json:"email"    validate:"required,email"`
-			Password string `json:"password" validate:"required,min=6"`
-		}
+		var req RegisterRequest
 		if err := io.Read(&req, r.Body); err != nil {
 			io.Error(err, r, w)
 			return

@@ -12,6 +12,17 @@ type ExchangeCallbackHandler interface {
 	ExchangeCallback(ctx context.Context, cmd cmdIntegrations.ExchangeCallbackCommand) error
 }
 
+// ExchangeCallbackController godoc
+//
+//	@Summary		Google OAuth callback
+//	@Description	Receives the OAuth authorization code from Google and stores the access token.
+//	@Tags			Integrations
+//	@Produce		plain
+//	@Param			state	query		string	true	"OAuth state parameter"
+//	@Param			code	query		string	true	"OAuth authorization code"
+//	@Success		200		{string}	string	"Google connected ✓"
+//	@Failure		400		{object}	controller.ErrorResponse
+//	@Router			/integrations/google/callback [get]
 func ExchangeCallbackController(io controller.IO, h ExchangeCallbackHandler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		state := r.URL.Query().Get("state")

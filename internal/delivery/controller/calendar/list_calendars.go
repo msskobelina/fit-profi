@@ -12,6 +12,17 @@ type ListCalendarsHandler interface {
 	ListCalendars(ctx context.Context, q qryCalendar.ListCalendarsQuery) ([]qryCalendar.CalendarInfo, error)
 }
 
+// ListCalendarsController godoc
+//
+//	@Summary		List Google Calendars
+//	@Description	Returns all calendars from the user's connected Google account.
+//	@Tags			Calendar
+//	@Security		BearerAuth
+//	@Produce		json
+//	@Success		200	{array}		qryCalendar.CalendarInfo
+//	@Failure		400	{object}	controller.ErrorResponse
+//	@Failure		401	{object}	controller.ErrorResponse
+//	@Router			/calendar/list [get]
 func ListCalendarsController(io controller.IO, h ListCalendarsHandler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		userID, _ := r.Context().Value("userID").(int)
