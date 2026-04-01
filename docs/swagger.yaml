@@ -1,0 +1,1290 @@
+basePath: /api/v1
+definitions:
+  github_com_msskobelina_fit-profi_internal_application_command_authorize.LoginUserResult:
+    properties:
+      email:
+        type: string
+      fullName:
+        type: string
+      token:
+        type: string
+      userID:
+        type: integer
+    type: object
+  github_com_msskobelina_fit-profi_internal_application_command_authorize.RegisterUserResult:
+    properties:
+      email:
+        type: string
+      fullName:
+        type: string
+      token:
+        type: string
+      userID:
+        type: integer
+    type: object
+  github_com_msskobelina_fit-profi_internal_application_query_calendar.CalendarInfo:
+    properties:
+      id:
+        type: string
+      summary:
+        type: string
+    type: object
+  github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse:
+    properties:
+      error:
+        example: validation error message
+        type: string
+    type: object
+  github_com_msskobelina_fit-profi_internal_domain_model.CoachAchievement:
+    properties:
+      certificateUrl:
+        type: string
+      coachProfileId:
+        type: integer
+      createdAt:
+        type: string
+      endPeriod:
+        type: string
+      id:
+        type: integer
+      startPeriod:
+        type: string
+      title:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  github_com_msskobelina_fit-profi_internal_domain_model.CoachCategory:
+    enum:
+    - standard
+    - master
+    - professional
+    type: string
+    x-enum-varnames:
+    - CoachStandard
+    - CoachMaster
+    - CoachPro
+  github_com_msskobelina_fit-profi_internal_domain_model.CoachEducation:
+    properties:
+      coachProfileId:
+        type: integer
+      createdAt:
+        type: string
+      description:
+        type: string
+      endPeriod:
+        type: string
+      id:
+        type: integer
+      place:
+        type: string
+      startPeriod:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  github_com_msskobelina_fit-profi_internal_domain_model.CoachProfile:
+    properties:
+      achievements:
+        items:
+          $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.CoachAchievement'
+        type: array
+      category:
+        $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.CoachCategory'
+      createdAt:
+        type: string
+      education:
+        items:
+          $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.CoachEducation'
+        type: array
+      fullName:
+        type: string
+      id:
+        type: integer
+      info:
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+    type: object
+  github_com_msskobelina_fit-profi_internal_domain_model.DiaryEntry:
+    properties:
+      createdAt:
+        type: string
+      date:
+        type: string
+      id:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.DiaryItem'
+        type: array
+      mealType:
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+    type: object
+  github_com_msskobelina_fit-profi_internal_domain_model.DiaryItem:
+    properties:
+      calories:
+        type: number
+      carbsG:
+        type: number
+      createdAt:
+        type: string
+      entryId:
+        type: integer
+      fatG:
+        type: number
+      grams:
+        type: number
+      id:
+        type: integer
+      name:
+        type: string
+      proteinG:
+        type: number
+      updatedAt:
+        type: string
+    type: object
+  github_com_msskobelina_fit-profi_internal_domain_model.ExerciseProgress:
+    properties:
+      createdAt:
+        type: string
+      exerciseId:
+        type: integer
+      id:
+        type: integer
+      notes:
+        type: string
+      reps:
+        type: integer
+      sets:
+        type: integer
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+      weightKg:
+        type: integer
+    type: object
+  github_com_msskobelina_fit-profi_internal_domain_model.Goal:
+    enum:
+    - lose_weight
+    - gain_weight
+    - rehab
+    - keep_fit
+    - competition
+    type: string
+    x-enum-varnames:
+    - GoalLoseWeight
+    - GoalGainWeight
+    - GoalRehab
+    - GoalKeepFit
+    - GoalCompetition
+  github_com_msskobelina_fit-profi_internal_domain_model.ProgramDay:
+    properties:
+      createdAt:
+        type: string
+      dayNumber:
+        type: integer
+      exercises:
+        items:
+          $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.ProgramExercise'
+        type: array
+      id:
+        type: integer
+      programId:
+        type: integer
+      title:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  github_com_msskobelina_fit-profi_internal_domain_model.ProgramExercise:
+    properties:
+      createdAt:
+        type: string
+      dayId:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      notes:
+        type: string
+      reps:
+        type: integer
+      sets:
+        type: integer
+      updatedAt:
+        type: string
+      weightKg:
+        type: integer
+    type: object
+  github_com_msskobelina_fit-profi_internal_domain_model.TrainingProgram:
+    properties:
+      createdAt:
+        type: string
+      days:
+        items:
+          $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.ProgramDay'
+        type: array
+      description:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+    type: object
+  github_com_msskobelina_fit-profi_internal_domain_model.UserProfile:
+    properties:
+      age:
+        type: integer
+      createdAt:
+        type: string
+      description:
+        type: string
+      fullName:
+        type: string
+      goal:
+        $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.Goal'
+      id:
+        type: integer
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+      weightKg:
+        type: number
+    type: object
+  internal_delivery_controller_authorize.CheckResponse:
+    properties:
+      role:
+        example: user
+        type: string
+      userId:
+        example: 42
+        type: integer
+    type: object
+  internal_delivery_controller_authorize.LoginRequest:
+    properties:
+      email:
+        example: john@example.com
+        type: string
+      password:
+        example: secret123
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  internal_delivery_controller_authorize.RegisterRequest:
+    properties:
+      email:
+        example: john@example.com
+        type: string
+      fullName:
+        example: John Doe
+        type: string
+      password:
+        example: secret123
+        minLength: 6
+        type: string
+    required:
+    - email
+    - fullName
+    - password
+    type: object
+  internal_delivery_controller_authorize.ResetPasswordRequest:
+    properties:
+      password:
+        example: newSecret123
+        minLength: 6
+        type: string
+      token:
+        example: eyJhbGciOiJIUzI1NiJ9...
+        type: string
+    required:
+    - password
+    - token
+    type: object
+  internal_delivery_controller_authorize.SendEmailRequest:
+    properties:
+      email:
+        example: john@example.com
+        type: string
+    required:
+    - email
+    type: object
+  internal_delivery_controller_calendar.CreateEventRequest:
+    properties:
+      attendees:
+        example:
+        - coach@example.com
+        items:
+          type: string
+        type: array
+      calendarId:
+        example: primary
+        type: string
+      end:
+        example: "2024-03-15T11:00:00Z"
+        type: string
+      notes:
+        example: Leg day
+        type: string
+      reminders:
+        example:
+        - 10
+        - 30
+        items:
+          type: integer
+        type: array
+      start:
+        example: "2024-03-15T10:00:00Z"
+        type: string
+      title:
+        example: Training session
+        type: string
+    required:
+    - end
+    - start
+    - title
+    type: object
+  internal_delivery_controller_calendar.CreateEventResult:
+    properties:
+      eventId:
+        example: abc123xyz
+        type: string
+    type: object
+  internal_delivery_controller_nutrition.CreateEntryRequest:
+    properties:
+      date:
+        example: "2024-03-15"
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.DiaryItem'
+        minItems: 1
+        type: array
+      mealType:
+        enum:
+        - breakfast
+        - lunch
+        - dinner
+        - snack
+        example: lunch
+        type: string
+    required:
+    - date
+    - items
+    - mealType
+    type: object
+  internal_delivery_controller_nutrition.UpdateEntryRequest:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.DiaryItem'
+        minItems: 1
+        type: array
+      mealType:
+        enum:
+        - breakfast
+        - lunch
+        - dinner
+        - snack
+        example: dinner
+        type: string
+    required:
+    - items
+    - mealType
+    type: object
+  internal_delivery_controller_profiles.CreateCoachProfileRequest:
+    properties:
+      achievements:
+        items:
+          $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.CoachAchievement'
+        type: array
+      category:
+        enum:
+        - standard
+        - master
+        - professional
+        example: master
+        type: string
+      education:
+        items:
+          $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.CoachEducation'
+        type: array
+      fullName:
+        example: Jane Smith
+        type: string
+      info:
+        example: 10 years of coaching experience
+        type: string
+    required:
+    - category
+    - fullName
+    - info
+    type: object
+  internal_delivery_controller_profiles.CreateUserProfileRequest:
+    properties:
+      age:
+        example: 25
+        type: integer
+      description:
+        example: I want to stay healthy
+        type: string
+      fullName:
+        example: John Doe
+        type: string
+      goal:
+        enum:
+        - lose_weight
+        - gain_weight
+        - rehab
+        - keep_fit
+        - competition
+        example: keep_fit
+        type: string
+      weightKg:
+        example: 75.5
+        type: number
+    required:
+    - age
+    - fullName
+    - goal
+    - weightKg
+    type: object
+  internal_delivery_controller_profiles.UpdateCoachProfileRequest:
+    properties:
+      achievements:
+        items:
+          $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.CoachAchievement'
+        type: array
+      category:
+        enum:
+        - standard
+        - master
+        - professional
+        example: professional
+        type: string
+      education:
+        items:
+          $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.CoachEducation'
+        type: array
+      fullName:
+        example: Jane Smith
+        type: string
+      info:
+        example: Updated bio
+        type: string
+    required:
+    - category
+    - fullName
+    - info
+    type: object
+  internal_delivery_controller_profiles.UpdateUserProfileRequest:
+    properties:
+      age:
+        example: 26
+        type: integer
+      description:
+        example: Updated description
+        type: string
+      fullName:
+        example: John Doe
+        type: string
+      goal:
+        enum:
+        - lose_weight
+        - gain_weight
+        - rehab
+        - keep_fit
+        - competition
+        example: lose_weight
+        type: string
+      weightKg:
+        example: 74
+        type: number
+    required:
+    - age
+    - fullName
+    - goal
+    - weightKg
+    type: object
+  internal_delivery_controller_programs.CreateProgramRequest:
+    properties:
+      days:
+        items:
+          $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.ProgramDay'
+        type: array
+      description:
+        example: 3-day full-body routine
+        type: string
+      title:
+        example: Beginner Full Body
+        type: string
+    required:
+    - title
+    type: object
+  internal_delivery_controller_programs.TrackProgressRequest:
+    properties:
+      exerciseId:
+        example: 5
+        type: integer
+      notes:
+        example: Felt strong today
+        type: string
+      reps:
+        example: 12
+        type: integer
+      sets:
+        example: 3
+        type: integer
+      weightKg:
+        example: 60
+        minimum: 0
+        type: integer
+    required:
+    - exerciseId
+    - reps
+    - sets
+    type: object
+host: localhost:8086
+info:
+  contact: {}
+  description: Fitness platform REST API — training programs, nutrition diary, Google
+    Calendar integration.
+  title: FitProfi API
+  version: 0.1.0
+paths:
+  /calendar/list:
+    get:
+      description: Returns all calendars from the user's connected Google account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_application_query_calendar.CalendarInfo'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List Google Calendars
+      tags:
+      - Calendar
+  /calendar/me/events:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new event in the user's connected Google Calendar.
+      parameters:
+      - description: Event data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_delivery_controller_calendar.CreateEventRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_delivery_controller_calendar.CreateEventResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create calendar event
+      tags:
+      - Calendar
+  /integrations/google/callback:
+    get:
+      description: Receives the OAuth authorization code from Google and stores the
+        access token.
+      parameters:
+      - description: OAuth state parameter
+        in: query
+        name: state
+        required: true
+        type: string
+      - description: OAuth authorization code
+        in: query
+        name: code
+        required: true
+        type: string
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Google connected ✓
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      summary: Google OAuth callback
+      tags:
+      - Integrations
+  /integrations/google/connect:
+    get:
+      description: Redirects the authenticated user to Google OAuth consent screen.
+      responses:
+        "302":
+          description: Redirect to Google OAuth
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Connect Google Calendar
+      tags:
+      - Integrations
+  /nutrition/entries:
+    get:
+      description: 'Returns all diary entries for the authenticated user on a given
+        date (default: today).'
+      parameters:
+      - description: Date in YYYY-MM-DD format
+        example: "2024-03-15"
+        in: query
+        name: date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.DiaryEntry'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List nutrition diary entries
+      tags:
+      - Nutrition
+    post:
+      consumes:
+      - application/json
+      description: Records a meal with food items for the authenticated user.
+      parameters:
+      - description: Diary entry
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_delivery_controller_nutrition.CreateEntryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.DiaryEntry'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create nutrition diary entry
+      tags:
+      - Nutrition
+  /nutrition/entries/{id}:
+    delete:
+      description: Deletes a diary entry belonging to the authenticated user.
+      parameters:
+      - description: Entry ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete nutrition diary entry
+      tags:
+      - Nutrition
+    get:
+      description: Returns a single diary entry by ID.
+      parameters:
+      - description: Entry ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.DiaryEntry'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get nutrition diary entry
+      tags:
+      - Nutrition
+    put:
+      consumes:
+      - application/json
+      description: Replaces the meal type and food items of an existing diary entry.
+      parameters:
+      - description: Entry ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated entry data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_delivery_controller_nutrition.UpdateEntryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.DiaryEntry'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update nutrition diary entry
+      tags:
+      - Nutrition
+  /profiles/coach:
+    get:
+      description: Returns the coach profile of the authenticated user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.CoachProfile'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get coach profile
+      tags:
+      - Profiles
+    post:
+      consumes:
+      - application/json
+      description: Creates a coach profile for the authenticated user.
+      parameters:
+      - description: Coach profile data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_delivery_controller_profiles.CreateCoachProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.CoachProfile'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create coach profile
+      tags:
+      - Profiles
+    put:
+      consumes:
+      - application/json
+      description: Replaces the coach profile for the authenticated user.
+      parameters:
+      - description: Updated coach profile data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_delivery_controller_profiles.UpdateCoachProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.CoachProfile'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update coach profile
+      tags:
+      - Profiles
+  /profiles/user:
+    get:
+      description: Returns the fitness profile of the authenticated user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.UserProfile'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get user profile
+      tags:
+      - Profiles
+    post:
+      consumes:
+      - application/json
+      description: Creates a fitness profile for the authenticated user.
+      parameters:
+      - description: User profile data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_delivery_controller_profiles.CreateUserProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.UserProfile'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create user profile
+      tags:
+      - Profiles
+    put:
+      consumes:
+      - application/json
+      description: Replaces the fitness profile for the authenticated user.
+      parameters:
+      - description: Updated profile data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_delivery_controller_profiles.UpdateUserProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.UserProfile'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update user profile
+      tags:
+      - Profiles
+  /programs:
+    get:
+      description: Returns all training programs belonging to the authenticated user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.TrainingProgram'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List training programs
+      tags:
+      - Programs
+    post:
+      consumes:
+      - application/json
+      description: Creates a new training program with optional days and exercises.
+      parameters:
+      - description: Program data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_delivery_controller_programs.CreateProgramRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.TrainingProgram'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create training program
+      tags:
+      - Programs
+  /programs/{id}:
+    delete:
+      description: Deletes a training program owned by the authenticated user.
+      parameters:
+      - description: Program ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete training program
+      tags:
+      - Programs
+    get:
+      description: Returns a training program by ID.
+      parameters:
+      - description: Program ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.TrainingProgram'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get training program
+      tags:
+      - Programs
+  /programs/progress:
+    post:
+      consumes:
+      - application/json
+      description: Records a completed set of an exercise for the authenticated user.
+      parameters:
+      - description: Progress data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_delivery_controller_programs.TrackProgressRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_domain_model.ExerciseProgress'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Track exercise progress
+      tags:
+      - Programs
+  /users/check:
+    get:
+      description: Returns the user ID and role extracted from the JWT token.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_delivery_controller_authorize.CheckResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Check auth token
+      tags:
+      - Auth
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates the user and returns a JWT token.
+      parameters:
+      - description: Login credentials
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_delivery_controller_authorize.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_application_command_authorize.LoginUserResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      summary: Login
+      tags:
+      - Auth
+  /users/logout:
+    post:
+      description: Revokes the current JWT token.
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Logout
+      tags:
+      - Auth
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new account and returns a JWT token.
+      parameters:
+      - description: Registration payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_delivery_controller_authorize.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_application_command_authorize.RegisterUserResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      summary: Register a new user
+      tags:
+      - Auth
+  /users/reset-password:
+    patch:
+      consumes:
+      - application/json
+      description: Resets the user password using a one-time reset token.
+      parameters:
+      - description: Reset token and new password
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_delivery_controller_authorize.ResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      summary: Reset password
+      tags:
+      - Auth
+  /users/send-email:
+    post:
+      consumes:
+      - application/json
+      description: Sends a one-time password-reset link to the given email address.
+      parameters:
+      - description: Email address
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_delivery_controller_authorize.SendEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_msskobelina_fit-profi_internal_delivery_controller.ErrorResponse'
+      summary: Send password-reset email
+      tags:
+      - Auth
+securityDefinitions:
+  BearerAuth:
+    description: 'Enter: Bearer <token>'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

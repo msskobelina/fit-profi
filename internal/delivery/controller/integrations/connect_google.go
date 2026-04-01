@@ -12,6 +12,16 @@ type ConnectGoogleHandler interface {
 	ConnectGoogle(ctx context.Context, cmd cmdIntegrations.ConnectGoogleCommand) (*cmdIntegrations.ConnectGoogleResult, error)
 }
 
+// ConnectGoogleController godoc
+//
+//	@Summary		Connect Google Calendar
+//	@Description	Redirects the authenticated user to Google OAuth consent screen.
+//	@Tags			Integrations
+//	@Security		BearerAuth
+//	@Success		302	"Redirect to Google OAuth"
+//	@Failure		400	{object}	controller.ErrorResponse
+//	@Failure		401	{object}	controller.ErrorResponse
+//	@Router			/integrations/google/connect [get]
 func ConnectGoogleController(io controller.IO, h ConnectGoogleHandler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		userID, _ := r.Context().Value("userID").(int)
